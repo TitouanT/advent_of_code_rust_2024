@@ -25,14 +25,14 @@ jobs:
           cache-target: release
           bins: cargo-codspeed
 
-      - name: Build the benchmark target(s)
-        run: cargo codspeed build
-
       - name: setup aoc cred
         run: cargo aoc credentials "${{ secrets.AOC_TOKEN }}"
 
       - name: dl inputs
         run: cargo aoc input -d 1 -y 2024
+
+      - name: Build the benchmark target(s)
+        run: cargo codspeed build
 
       - name: Run benchmarks
         uses: CodSpeedHQ/action@v3
