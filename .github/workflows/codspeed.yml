@@ -25,6 +25,9 @@ jobs:
           cache-target: release
           bins: cargo-codspeed
 
+      - name: install cargo-aoc
+        run: cargo install cargo-aoc
+
       - name: setup aoc cred
         run: cargo aoc credentials "${{ secrets.AOC_TOKEN }}"
 
