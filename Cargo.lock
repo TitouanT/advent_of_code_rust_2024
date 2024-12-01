@@ -41,7 +41,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "aoc_rust"
+name = "aoc_rust_2024"
 version = "0.1.0"
 dependencies = [
  "aoc-runner",
