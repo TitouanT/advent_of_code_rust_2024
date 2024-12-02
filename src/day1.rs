@@ -38,11 +38,10 @@ pub fn part1(input: &str) -> i32 {
 #[aoc(day1, part2)]
 pub fn part2(input: &str) -> i32 {
     let (lft, rgt) = parse_input(input);
-    let lft_counter = counter(lft);
     let rgt_counter = counter(rgt);
     let mut t = 0;
-    for (k, v) in &lft_counter {
-        t += k*v*rgt_counter.get(k).unwrap_or(&0);
+    for k in &lft {
+        t += k*rgt_counter.get(k).unwrap_or(&0);
     }
     t
 }
