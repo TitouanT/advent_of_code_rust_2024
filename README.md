@@ -21,5 +21,5 @@ To add a benchmark simply do
 ```
 ./mk_bench.sh [NUMBER_OF_DAY]
 ```
-For exemple `./mk_bench.sh 4`
+For exemple `./mk_bench.sh 4` will create bench files for days 1, 2, 3 and 4, download inputs if needed and hide them if needed
 
