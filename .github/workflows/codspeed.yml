@@ -26,7 +26,9 @@ jobs:
           bins: cargo-codspeed
 
       - name: Setup env
-        run: printf "%s\n" "${{ secrets.AOC_INPUT_PASSPHRASE }}" > .passphrase
+        run: printf "%s\n" "${AOC_INPUT_PASSPHRASE}" > .passphrase
+        env:
+          AOC_INPUT_PASSPHRASE: ${{ secrets.AOC_INPUT_PASSPHRASE }}
       - name: Provide inputs
         run: ./show_input.sh
 
