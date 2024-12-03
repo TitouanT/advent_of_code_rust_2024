@@ -1,4 +1,5 @@
 #!/bin/bash
+shasum .passphrase
 for f in ./input/*/*.gpg
 do
     name="$(dirname "$f")/$(basename "$f" .gpg)"
