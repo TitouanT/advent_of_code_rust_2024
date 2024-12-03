@@ -1,4 +1,5 @@
 # AOC 2024 in rust
+[![CodSpeed Badge](https://img.shields.io/endpoint?url=https://codspeed.io/badge.json)](https://codspeed.io/TitouanT/advent_of_code_rust_2024)
 
 My participation to [aoc 2024](https://adventofcode.com/2024) in Rust.
 
