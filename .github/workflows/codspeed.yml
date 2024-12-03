@@ -25,6 +25,11 @@ jobs:
           cache-target: release
           bins: cargo-codspeed
 
+      - name: Setup env
+        run: printf "%s\n" "${{ secrets.AOC_INPUT_PASSPHRASE }}" > .passphrase
+      - name: Provide inputs
+        run: ./show_input.sh
+
       # the following worked but I don't want to do the whole installation every time, to end up downloading the input every time
       # - name: install cargo-aoc
       #   run: cargo install cargo-aoc
