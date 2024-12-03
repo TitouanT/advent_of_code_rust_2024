@@ -1,5 +1,3 @@
-
-// use codspeed_criterion_compat::{black_box, criterion_group, criterion_main, Criterion};
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 use __REPO__::__DAY__::{part1, part2};

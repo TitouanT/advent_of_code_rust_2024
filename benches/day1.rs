@@ -1,5 +1,3 @@
-
-// use codspeed_criterion_compat::{black_box, criterion_group, criterion_main, Criterion};
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 use advent_of_code_rust_2024::day1::{part1, part2};
