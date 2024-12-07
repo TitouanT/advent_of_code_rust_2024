@@ -21,18 +21,10 @@ impl Direction {
         (self.dl, self.dc) = (self.dc, -self.dl);
     }
     fn as_bit(&self) -> u8 {
-        if self.dl == -1 {
-            0
-        }
-        else if self.dl == 1 {
-            1
-        }
-        else if self.dc == 1 {
-            2
-        }
-        else {
-            4
-        }
+        if self.dl == -1 { 0 }
+        else if self.dl == 1 { 1 }
+        else if self.dc == 1 { 2 }
+        else { 4 }
     }
 }
 
