@@ -1,17 +1,17 @@
 const N: usize = 100;
-use std::cmp;
+use std::cmp::Ordering;
 
 fn parse_int(s: &str) -> usize {
     s.parse::<usize>().expect("Valid input")
 }
 
-fn parse_rules(rules: &[&str]) -> [[cmp::Ordering; N]; N]{
-    let mut ans = [[cmp::Ordering::Equal; N]; N];
+fn parse_rules(rules: &[&str]) -> [[Ordering; N]; N]{
+    let mut ans = [[Ordering::Equal; N]; N];
     for rule in rules {
         let a = parse_int(&rule[..2]);
         let b = parse_int(&rule[3..]);
-        ans[a][b] = cmp::Ordering::Less;
-        ans[b][a] = cmp::Ordering::Greater;
+        ans[a][b] = Ordering::Less;
+        ans[b][a] = Ordering::Greater;
     }
     ans
 }
@@ -26,7 +26,7 @@ fn parse_jobs(jobs: &[&str]) -> Vec<Vec<usize>>{
     }
     ans
 }
-fn parse_input(input: &str) -> ([[cmp::Ordering; N]; N], Vec<Vec<usize>>) {
+fn parse_input(input: &str) -> ([[Ordering; N]; N], Vec<Vec<usize>>) {
     let mut rules = vec![];
     let mut jobs = vec![];
     if let [raw_rules, raw_jobs] = input.split("\n\n").collect::<Vec<_>>()[..] {
@@ -48,7 +48,7 @@ pub fn part1(input: &str) -> usize {
     let (order, jobs) = parse_input(input);
     jobs
         .iter()
-        .filter(|&job| job.is_sorted_by(|&a, &b| order[a][b] == cmp::Ordering::Less))
+        .filter(|job| job.is_sorted_by(|&a, &b| order[a][b] == Ordering::Less))
         .map(|job| job[job.len()/2])
         .sum()
 }
@@ -57,7 +57,10 @@ pub fn part2(input: &str) -> usize {
     let (order, mut jobs) = parse_input(input);
     jobs
         .iter_mut()
-        .filter(|job| !job.is_sorted_by(|&a, &b| order[a][b] == cmp::Ordering::Less))
-        .map(|job| {let n = job.len()/2; *(job.select_nth_unstable_by(n, |&a, &b| order[a][b]).1) })
+        .filter(|job| !job.is_sorted_by(|&a, &b| order[a][b] == Ordering::Less))
+        .map(|job| {
+            let n = job.len()/2;
+            *(job.select_nth_unstable_by(n, |&a, &b| order[a][b]).1)
+        })
         .sum()
 }
