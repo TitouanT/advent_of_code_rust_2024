@@ -55,7 +55,6 @@ fn is_solvable_p1(eq: &Equation) -> bool {
 pub fn part1(input: &str) -> u64 {
     let equations = parse_input(input);
     equations.into_iter().filter(is_solvable_p1).map(|eq| eq.solution).sum()
-    // 1708857123053
 }
 
 fn is_solvable_p2_helper(eq: &Equation, n: usize, acc: u64) -> bool {
@@ -78,5 +77,4 @@ fn is_solvable_p2(eq: &Equation) -> bool {
 pub fn part2(input: &str) -> u64 {
     let equations = parse_input(input);
     equations.into_iter().filter(is_solvable_p2).map(|eq| eq.solution).sum()
-    // 189207836795655
 }
