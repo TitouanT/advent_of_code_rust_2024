@@ -41,8 +41,6 @@ fn is_solvable_p1_helper(eq: &Equation, n: usize, acc: u64) -> bool {
         return acc == head.value;
     }
 
-    // is_solvable_p1_helper(eq, n+1, acc+head.value)
-    // ||
     acc % head.value == 0 && is_solvable_p1_helper(eq, n-1, acc/head.value)
     ||
     acc >= head.value && is_solvable_p1_helper(eq, n-1, acc-head.value)
@@ -67,9 +65,9 @@ fn is_solvable_p2_helper(eq: &Equation, n: usize, acc: u64) -> bool {
     }
     acc % head.value == 0 && is_solvable_p2_helper(eq, n-1, acc/head.value)
     ||
-    acc >= head.value && is_solvable_p2_helper(eq, n-1, acc-head.value)
-    ||
     acc % head.shift == head.value && is_solvable_p2_helper(eq, n-1, acc/head.shift)
+    ||
+    acc >= head.value && is_solvable_p2_helper(eq, n-1, acc-head.value)
 }
 
 fn is_solvable_p2(eq: &Equation) -> bool {
