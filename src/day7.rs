@@ -39,9 +39,9 @@ fn is_solvable_p1_helper(eq: &Equation, n: usize, acc: u64) -> bool {
     if n >= eq.members.len() {
         return acc == eq.solution;
     }
-    // if acc >= eq.solution {
-    //     return false
-    // }
+    if acc > eq.solution {
+        return false
+    }
 
     let head = &eq.members[n];
     is_solvable_p1_helper(eq, n+1, acc+head.value)
@@ -62,6 +62,9 @@ pub fn part1(input: &str) -> u64 {
 fn is_solvable_p2_helper(eq: &Equation, n: usize, acc: u64) -> bool {
     if n >= eq.members.len() {
         return acc == eq.solution;
+    }
+    if acc > eq.solution {
+        return false
     }
 
     let head = &eq.members[n];
