@@ -36,52 +36,49 @@ fn parse_input(input: &str) -> Vec<Equation> {
 }
 
 fn is_solvable_p1_helper(eq: &Equation, n: usize, acc: u64) -> bool {
-    if n >= eq.members.len() {
-        return acc == eq.solution;
-    }
-    if acc > eq.solution {
-        return false
+    let head = &eq.members[n];
+    if n == 0  {
+        return acc == head.value;
     }
 
-    let head = &eq.members[n];
-    is_solvable_p1_helper(eq, n+1, acc+head.value)
+    // is_solvable_p1_helper(eq, n+1, acc+head.value)
+    // ||
+    acc % head.value == 0 && is_solvable_p1_helper(eq, n-1, acc/head.value)
     ||
-    is_solvable_p1_helper(eq, n+1, acc*head.value)
+    acc >= head.value && is_solvable_p1_helper(eq, n-1, acc-head.value)
+
 }
 
 fn is_solvable_p1(eq: &Equation) -> bool {
-    is_solvable_p1_helper(eq, 1, eq.members[0].value)
+    is_solvable_p1_helper(eq, eq.members.len()-1, eq.solution)
 }
 
 #[aoc(day7, part1)]
 pub fn part1(input: &str) -> u64 {
     let equations = parse_input(input);
     equations.into_iter().filter(is_solvable_p1).map(|eq| eq.solution).sum()
+    // 1708857123053
 }
 
 fn is_solvable_p2_helper(eq: &Equation, n: usize, acc: u64) -> bool {
-    if n >= eq.members.len() {
-        return acc == eq.solution;
-    }
-    if acc > eq.solution {
-        return false
-    }
-
     let head = &eq.members[n];
-    is_solvable_p2_helper(eq, n+1, acc+head.value)
+    if n == 0  {
+        return acc == head.value;
+    }
+    acc % head.value == 0 && is_solvable_p2_helper(eq, n-1, acc/head.value)
     ||
-    is_solvable_p2_helper(eq, n+1, acc*head.value)
+    acc >= head.value && is_solvable_p2_helper(eq, n-1, acc-head.value)
     ||
-    is_solvable_p2_helper(eq, n+1, acc*head.shift + head.value)
+    acc % head.shift == head.value && is_solvable_p2_helper(eq, n-1, acc/head.shift)
 }
 
 fn is_solvable_p2(eq: &Equation) -> bool {
-    is_solvable_p2_helper(eq, 1, eq.members[0].value)
+    is_solvable_p2_helper(eq, eq.members.len()-1, eq.solution)
 }
 
 #[aoc(day7, part2)]
 pub fn part2(input: &str) -> u64 {
     let equations = parse_input(input);
     equations.into_iter().filter(is_solvable_p2).map(|eq| eq.solution).sum()
+    // 189207836795655
 }
-
