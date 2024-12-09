@@ -7,10 +7,10 @@ do
     if [ ! -f "${name}" ]
     then
         printf "."
-        gpg --batch --passphrase-file .passphrase --output "${name}" --decrypt "${f}" 2>/dev/null >/dev/null &
+        gpg --batch --passphrase-file .passphrase --output "${name}" --decrypt "${f}"
     fi
 done
 
-wait
+# wait
 printf " done\n"
 ls ./input/2024/
