@@ -1,6 +1,6 @@
 #!/bin/bash
 printf "Decrypting "
-for f in ./input/*/*.gpg
+for f in $(find ./input -name "*.gpg")
 do
     name="$(dirname "$f")/$(basename "$f" .gpg)"
 
