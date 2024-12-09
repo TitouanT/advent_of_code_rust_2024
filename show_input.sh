@@ -12,4 +12,5 @@ do
 done
 
 wait
+sleep 1
 printf " done\n"
