@@ -1,10 +1,15 @@
 #!/bin/bash
+printf "Decrypting "
 for f in ./input/*/*.gpg
 do
     name="$(dirname "$f")/$(basename "$f" .gpg)"
 
     if [ ! -f "${name}" ]
     then
-        gpg --batch --passphrase-file .passphrase --output "${name}" --decrypt "${f}"
+        printf "."
+        gpg --batch --passphrase-file .passphrase --output "${name}" --decrypt "${f}" 2>/dev/null >/dev/null &
     fi
 done
+
+wait
+printf " done\n"
