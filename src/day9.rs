@@ -14,7 +14,7 @@ struct Bloc {
 }
 
 #[target_feature(enable = "avx2,bmi1,bmi2,cmpxchg16b,lzcnt,movbe,popcnt")]
-fn read_input(input: &str) -> ([Bloc;N], [Bloc;N-1]) {
+unsafe fn read_input(input: &str) -> ([Bloc;N], [Bloc;N-1]) {
     let mut files = [Bloc {
         id: 0,
         loc: 0,
@@ -57,8 +57,7 @@ fn read_input(input: &str) -> ([Bloc;N], [Bloc;N-1]) {
 }
 
 #[target_feature(enable = "avx2,bmi1,bmi2,cmpxchg16b,lzcnt,movbe,popcnt")]
-#[aoc(day9, part1)]
-pub fn part1(input: &str) -> usize {
+unsafe fn part1_wrap(input: &str) -> usize {
     let (files, spaces) = read_input(input);
 
     let mut file_index = N-1;
@@ -103,11 +102,17 @@ pub fn part1(input: &str) -> usize {
         }
     }
     checksum
+
+}
+#[aoc(day9, part1)]
+pub fn part1(input: &str) -> usize {
+    unsafe {
+        part1_wrap(input)
+    }
 }
 
-#[aoc(day9, part2)]
 #[target_feature(enable = "avx2,bmi1,bmi2,cmpxchg16b,lzcnt,movbe,popcnt")]
-pub fn part2(input: &str) -> usize {
+unsafe fn part2_wrap(input: &str) -> usize {
     let (files, mut spaces) = read_input(input);
 
     let mut stacks = [BlocStack{n: 0, stack: [0;N]};10];
@@ -147,4 +152,12 @@ pub fn part2(input: &str) -> usize {
         }
     }
     checksum
+
+}
+
+#[aoc(day9, part2)]
+pub fn part2(input: &str) -> usize {
+    unsafe {
+        part2_wrap(input)
+    }
 }
