@@ -13,6 +13,7 @@ struct Bloc {
     len: usize,
 }
 
+#[target_feature(enable = "avx2,bmi1,bmi2,cmpxchg16b,lzcnt,movbe,popcnt")]
 fn read_input(input: &str) -> ([Bloc;N], [Bloc;N-1]) {
     let mut files = [Bloc {
         id: 0,
@@ -55,6 +56,7 @@ fn read_input(input: &str) -> ([Bloc;N], [Bloc;N-1]) {
     (files, spaces)
 }
 
+#[target_feature(enable = "avx2,bmi1,bmi2,cmpxchg16b,lzcnt,movbe,popcnt")]
 #[aoc(day9, part1)]
 pub fn part1(input: &str) -> usize {
     let (files, spaces) = read_input(input);
@@ -104,6 +106,7 @@ pub fn part1(input: &str) -> usize {
 }
 
 #[aoc(day9, part2)]
+#[target_feature(enable = "avx2,bmi1,bmi2,cmpxchg16b,lzcnt,movbe,popcnt")]
 pub fn part2(input: &str) -> usize {
     let (files, mut spaces) = read_input(input);
 
