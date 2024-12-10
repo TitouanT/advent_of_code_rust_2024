@@ -1,3 +1,5 @@
-/target
+target
 *.txt
 .passphrase
+.aoc_cookie
+html

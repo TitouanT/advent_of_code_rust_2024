@@ -10,10 +10,16 @@ And also trying to meet the 36h rust leaderboard deadline from [codspeed advent]
 
 For the inputs you need to put a secret passphrase in `.passphrase`
 and add it to your variables as `AOC_INPUT_PASSPHRASE`
+It is used to encrypt your inputs and outputs for each day with gpg.
+
+You will also need to create a `.cookie` file with a content resembling:
+```bash
+cookie='session=YOUR_AOC_COOKIE_HERE'
+```
 
 To add an input for a day, do:
 ```
-cargo aoc input [--day <DAY>]
+./get_input_output.sh <day number> # get
 ./hide_input.sh
 ```
 Then in the runner, the inputs will be made available by `show_input.sh`
