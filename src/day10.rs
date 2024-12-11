@@ -49,28 +49,28 @@ fn all_9s_bis(grid:&[[u8;N];N], l: usize, c: usize) -> u32 {
         let mut nextl = 0;
         let mut nextc = 0;
         let mut n_branch = 0;
-        let a = l < N-1 && grid[l-1][c  ] == target + 1;
+        let a = l > 0   && grid[l-1][c  ] == target + 1;
         let b = l < N-1 && grid[l+1][c  ] == target + 1;
         let d = c >  0  && grid[l  ][c-1] == target + 1;
         let e = c < N-1 && grid[l  ][c+1] == target + 1;
         if a {
-            nextl = l;
+            nextl = l-1;
             nextc = c;
             n_branch += 1;
         }
         if b {
-            nextl = l;
+            nextl = l+1;
             nextc = c;
             n_branch += 1;
         }
         if d {
             nextl = l;
-            nextc = c;
+            nextc = c-1;
             n_branch += 1;
         }
         if e {
             nextl = l;
-            nextc = c;
+            nextc = c+1;
             n_branch += 1;
         }
 
