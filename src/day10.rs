@@ -22,7 +22,7 @@ fn all_uniq_9s(grid:&[[u8;N];N], l: usize, c: usize) -> u32 {
     // }
 
     let mut to_visit = [[true;N];N];
-    let mut queue = [(0u8,0u8);N*N];
+    let mut queue = [(0u8,0u8);N];
     queue[0] = (l as u8, c as u8);
     let mut start = 0;
     let mut end = 1;
