@@ -126,7 +126,7 @@ pub fn part1(input: &str) -> u32 {
 #[aoc(day14, part2)]
 pub fn part2(input: &str) -> usize {
     let input = input.as_bytes();
-    const SAMPLE_SIZE: usize = 90;
+    const SAMPLE_SIZE: usize = 120;
     let mut samples_lines = [(0i32, 0i32);SAMPLE_SIZE];
     let mut samples_cols = [(0i32, 0i32);SAMPLE_SIZE];
     let mut index = 2;
