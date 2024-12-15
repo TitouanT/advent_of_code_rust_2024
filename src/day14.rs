@@ -127,10 +127,11 @@ pub fn part1(input: &str) -> u32 {
 pub fn part2(input: &str) -> usize {
     let input = input.as_bytes();
     const SAMPLE_SIZE: usize = 90;
-    let mut samples = [(0i32, 0i32, 0i32, 0i32);SAMPLE_SIZE];
+    let mut samples_lines = [(0i32, 0i32);SAMPLE_SIZE];
+    let mut samples_cols = [(0i32, 0i32);SAMPLE_SIZE];
     let mut index = 2;
-    for s in samples.iter_mut() {
-        s.0 = {
+    for (sl, sc) in samples_lines.iter_mut().zip(samples_cols.iter_mut()) {
+        sc.0 = {
             let limit = b',';
             let mut n = input[index] as i32 - 48;
             index += 1;
@@ -143,7 +144,7 @@ pub fn part2(input: &str) -> usize {
 
         index += 1;
 
-        s.2 = {
+        sl.0 = {
             let limit = b' ';
             let mut n = input[index] as i32 - 48;
             index += 1;
@@ -156,7 +157,7 @@ pub fn part2(input: &str) -> usize {
 
         index += 3;
 
-        s.1 = {
+        sc.1 = {
             let limit = b',';
             let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
             let mut n = input[index] as i32 - 48;
@@ -170,7 +171,7 @@ pub fn part2(input: &str) -> usize {
 
         index += 1;
 
-        s.3 = {
+        sl.1 = {
             let limit = b'\n';
             let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
             let mut n = input[index] as i32 - 48;
@@ -192,8 +193,8 @@ pub fn part2(input: &str) -> usize {
         for t in 1..N {
             let mut v = [0;N];
             let mut maxi_value = 0;
-            for s in samples {
-                let e: usize = (s.2 + s.3*(t as i32)).rem_euclid(N as i32) as usize;
+            for s in samples_lines {
+                let e: usize = (s.0 + s.1*(t as i32)).rem_euclid(N as i32) as usize;
                 v[e]+=1;
                 if v[e] > maxi_value {
                     maxi_value = v[e];
@@ -215,7 +216,7 @@ pub fn part2(input: &str) -> usize {
         for t in 1..N {
             let mut v = [0;N];
             let mut maxi_value = 0;
-            for s in samples {
+            for s in samples_cols {
                 let e: usize = (s.0 + s.1*(t as i32)).rem_euclid(N as i32) as usize;
                 v[e]+=1;
                 if v[e] > maxi_value {
@@ -230,11 +231,12 @@ pub fn part2(input: &str) -> usize {
         m
     };
 
-    let mut n = 60;
-    let mut t = n * L + mod_c;
+    let n = 60;
+    let mut t = n * L + mod_l;
     while t % C != mod_c {
-        n += 1;
-        t = n * L + mod_l;
+        t += L;
     }
+    const T:usize = L*C;
+    if t > T { t-=T; }
     t
 }
