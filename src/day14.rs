@@ -128,9 +128,7 @@ pub fn part2(input: &str) -> usize {
     let input = input.as_bytes();
     const SAMPLE_SIZE: usize = 90;
     let mut samples = [(0i32, 0i32, 0i32, 0i32);SAMPLE_SIZE];
-
     let mut index = 2;
-    // for i in 0..SAMPLE_SIZE {
     for s in samples.iter_mut() {
         s.0 = {
             let limit = b',';
@@ -187,19 +185,18 @@ pub fn part2(input: &str) -> usize {
     }
 
     const L: usize = 103;
-    let mut v = [[0;L];L];
     let mod_l = {
         const N: usize = L;
         let mut m = 0;
         let mut m_count = 0;
         for t in 1..N {
-            // let mut v = [0;N];
+            let mut v = [0;N];
             let mut maxi_value = 0;
             for s in samples {
                 let e: usize = (s.2 + s.3*(t as i32)).rem_euclid(N as i32) as usize;
-                v[t][e]+=1;
-                if v[t][e] > maxi_value {
-                    maxi_value = v[t][e];
+                v[e]+=1;
+                if v[e] > maxi_value {
+                    maxi_value = v[e];
                 }
             }
             if m_count < maxi_value {
@@ -211,19 +208,18 @@ pub fn part2(input: &str) -> usize {
     };
 
     const C: usize = 101;
-    let mut v = [[0;C];C];
     let mod_c = {
         const N: usize = C;
         let mut m = 0;
         let mut m_count = 0;
         for t in 1..N {
-            // let mut v = [0;N];
+            let mut v = [0;N];
             let mut maxi_value = 0;
             for s in samples {
                 let e: usize = (s.0 + s.1*(t as i32)).rem_euclid(N as i32) as usize;
-                v[t][e]+=1;
-                if v[t][e] > maxi_value {
-                    maxi_value = v[t][e];
+                v[e]+=1;
+                if v[e] > maxi_value {
+                    maxi_value = v[e];
                 }
             }
             if m_count < maxi_value {
