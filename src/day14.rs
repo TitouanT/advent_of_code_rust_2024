@@ -10,59 +10,6 @@ pub fn part1(input: &str) -> u32 {
     const L: u32 = 103;
     const C: u32 = 101;
     for _ in 0..500 {
-        // let pc = {
-        //     let limit = b',';
-        //     let mut n = input[index] as i32 - 48;
-        //     index += 1;
-        //     while input[index] != limit {
-        //         n = 10*n + input[index] as i32 - 48;
-        //         index += 1;
-        //     }
-        //     n
-        // };
-
-        // index += 1;
-
-        // let pl = {
-        //     let limit = b' ';
-        //     let mut n = input[index] as i32 - 48;
-        //     index += 1;
-        //     while input[index] != limit {
-        //         n = 10*n + input[index] as i32 - 48;
-        //         index += 1;
-        //     }
-        //     n
-        // };
-
-        // index += 3;
-
-        // let vc = {
-        //     let limit = b',';
-        //     let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
-        //     let mut n = input[index] as i32 - 48;
-        //     index += 1;
-        //     while input[index] != limit {
-        //         n = 10*n + input[index] as i32 - 48;
-        //         index += 1;
-        //     }
-        //     sign * n
-        // };
-
-        // index += 1;
-
-        // let vl = {
-        //     let limit = b'\n';
-        //     let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
-        //     let mut n = input[index] as i32 - 48;
-        //     index += 1;
-        //     while index < input_size && input[index] != limit {
-        //         n = 10*n + input[index] as i32 - 48;
-        //         index += 1;
-        //     }
-        //     sign * n
-        // };
-        // index += 3;
-
         let pc = {
             let limit = b',';
             let mut n = input[index] as u32 - 48;
@@ -137,48 +84,6 @@ pub fn part1(input: &str) -> u32 {
         let ec = (pc + vc*100)%C;
         let el = (pl + vl*100)%L;
 
-        // let ec = (pc + vc*100).rem_euclid(101);
-        // let el = (pl + vl*100).rem_euclid(103);
-
-        // slower 14%
-        // match ec.cmp(&50) {
-        //     Ordering::Less    => {
-        //         match el.cmp(&51) {
-        //             Ordering::Less    => q1 += 1,
-        //             Ordering::Greater => q2 += 1,
-        //             _ => {},
-        //         }
-        //     },
-        //     Ordering::Greater => {
-        //         match el.cmp(&51) {
-        //             Ordering::Less    => q3 += 1,
-        //             Ordering::Greater => q4 += 1,
-        //             _ => {},
-        //         }
-        //     },
-        //     _ => {},
-        // }
-
-        // about same
-        // match ec {
-        //     0..50 => {
-        //         match el {
-        //             0..51  => q1 += 1,
-        //             52..103 => q2 += 1,
-        //             _ => (),
-        //         }
-        //     },
-        //     51..101 => {
-        //         match el {
-        //             0..51  => q3 += 1,
-        //             52..103 => q4 += 1,
-        //             _ => (),
-        //         }
-        //     },
-        //     _ => (),
-        // }
-
-        // baseline
         if ec < 50 {
             if el < 51 {
                 q1 += 1;
@@ -287,8 +192,12 @@ pub fn part2(input: &str) -> u32 {
         for t in 1..L {
             let mut v = [0;L as usize];
             let mut maxi_value = 0;
-            for s in samples_lines {
-                let e: usize = ((s.0 + s.1*t) % L) as usize;
+            for s in samples_lines.iter_mut() {
+                s.0 += s.1;
+                if s.0 >= L {
+                    s.0 -= L;
+                }
+                let e = s.0 as usize;
                 v[e]+=1;
                 if v[e] > maxi_value {
                     maxi_value = v[e];
@@ -306,12 +215,20 @@ pub fn part2(input: &str) -> u32 {
         let mut m = 0;
         let mut m_count = 0;
         let mut t = mod_l;
+        for s in samples_cols.iter_mut() {
+            s.0 = (s.0 + (mod_l * s.1))%C;
+            s.1 = (L*s.1)%C;
+        }
         for _ in 1..C {
             t+=L;
             let mut v = [0;C as usize];
             let mut maxi_value = 0;
-            for s in samples_cols {
-                let e: usize = ((s.0 + s.1*t) % C) as usize;
+            for s in samples_cols.iter_mut() {
+                s.0 += s.1;
+                if s.0 >= C {
+                    s.0 -= C;
+                }
+                let e = s.0 as usize;
                 v[e]+=1;
                 if v[e] > maxi_value {
                     maxi_value = v[e];
@@ -324,13 +241,4 @@ pub fn part2(input: &str) -> u32 {
         }
         m
     }
-
-    // let n = 60;
-    // let mut t = n * L + mod_l;
-    // while t % C != mod_c {
-    //     t += L;
-    // }
-    // const T:usize = L*C;
-    // if t > T { t-=T; }
-    // mod_c
 }
