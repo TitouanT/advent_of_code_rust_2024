@@ -7,13 +7,68 @@ pub fn part1(input: &str) -> u32 {
     let mut q2 = 0;
     let mut q3 = 0;
     let mut q4 = 0;
+    const L: u32 = 103;
+    const C: u32 = 101;
     for _ in 0..500 {
+        // let pc = {
+        //     let limit = b',';
+        //     let mut n = input[index] as i32 - 48;
+        //     index += 1;
+        //     while input[index] != limit {
+        //         n = 10*n + input[index] as i32 - 48;
+        //         index += 1;
+        //     }
+        //     n
+        // };
+
+        // index += 1;
+
+        // let pl = {
+        //     let limit = b' ';
+        //     let mut n = input[index] as i32 - 48;
+        //     index += 1;
+        //     while input[index] != limit {
+        //         n = 10*n + input[index] as i32 - 48;
+        //         index += 1;
+        //     }
+        //     n
+        // };
+
+        // index += 3;
+
+        // let vc = {
+        //     let limit = b',';
+        //     let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
+        //     let mut n = input[index] as i32 - 48;
+        //     index += 1;
+        //     while input[index] != limit {
+        //         n = 10*n + input[index] as i32 - 48;
+        //         index += 1;
+        //     }
+        //     sign * n
+        // };
+
+        // index += 1;
+
+        // let vl = {
+        //     let limit = b'\n';
+        //     let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
+        //     let mut n = input[index] as i32 - 48;
+        //     index += 1;
+        //     while index < input_size && input[index] != limit {
+        //         n = 10*n + input[index] as i32 - 48;
+        //         index += 1;
+        //     }
+        //     sign * n
+        // };
+        // index += 3;
+
         let pc = {
             let limit = b',';
-            let mut n = input[index] as i32 - 48;
+            let mut n = input[index] as u32 - 48;
             index += 1;
             while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+                n = 10*n + input[index] as u32 - 48;
                 index += 1;
             }
             n
@@ -23,10 +78,10 @@ pub fn part1(input: &str) -> u32 {
 
         let pl = {
             let limit = b' ';
-            let mut n = input[index] as i32 - 48;
+            let mut n = input[index] as u32 - 48;
             index += 1;
             while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+                n = 10*n + input[index] as u32 - 48;
                 index += 1;
             }
             n
@@ -36,33 +91,54 @@ pub fn part1(input: &str) -> u32 {
 
         let vc = {
             let limit = b',';
-            let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
-            let mut n = input[index] as i32 - 48;
-            index += 1;
-            while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+            if input[index] == b'-'{
                 index += 1;
+                let mut n = 0;
+                while input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                C - n
             }
-            sign * n
+            else {
+                let mut n = 0;
+                while input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                n
+            }
         };
 
         index += 1;
 
         let vl = {
             let limit = b'\n';
-            let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
-            let mut n = input[index] as i32 - 48;
-            index += 1;
-            while index < input_size && input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+            if input[index] == b'-'{
                 index += 1;
+                let mut n = 0;
+                while index < input_size && input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                L - n
             }
-            sign * n
+            else {
+                let mut n = 0;
+                while index < input_size && input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                n
+            }
         };
         index += 3;
 
-        let ec = (pc + vc*100).rem_euclid(101);
-        let el = (pl + vl*100).rem_euclid(103);
+        let ec = (pc + vc*100)%C;
+        let el = (pl + vl*100)%L;
+
+        // let ec = (pc + vc*100).rem_euclid(101);
+        // let el = (pl + vl*100).rem_euclid(103);
 
         // slower 14%
         // match ec.cmp(&50) {
@@ -124,19 +200,21 @@ pub fn part1(input: &str) -> u32 {
 }
 
 #[aoc(day14, part2)]
-pub fn part2(input: &str) -> usize {
+pub fn part2(input: &str) -> u32 {
     let input = input.as_bytes();
     const SAMPLE_SIZE: usize = 120;
-    let mut samples_lines = [(0i32, 0i32);SAMPLE_SIZE];
-    let mut samples_cols = [(0i32, 0i32);SAMPLE_SIZE];
+    let mut samples_lines = [(0u32, 0u32);SAMPLE_SIZE];
+    let mut samples_cols = [(0u32, 0u32);SAMPLE_SIZE];
     let mut index = 2;
+    const L: u32 = 103;
+    const C: u32 = 101;
     for (sl, sc) in samples_lines.iter_mut().zip(samples_cols.iter_mut()) {
         sc.0 = {
             let limit = b',';
-            let mut n = input[index] as i32 - 48;
+            let mut n = input[index] as u32 - 48;
             index += 1;
             while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+                n = 10*n + input[index] as u32 - 48;
                 index += 1;
             }
             n
@@ -146,10 +224,10 @@ pub fn part2(input: &str) -> usize {
 
         sl.0 = {
             let limit = b' ';
-            let mut n = input[index] as i32 - 48;
+            let mut n = input[index] as u32 - 48;
             index += 1;
             while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+                n = 10*n + input[index] as u32 - 48;
                 index += 1;
             }
             n
@@ -159,42 +237,58 @@ pub fn part2(input: &str) -> usize {
 
         sc.1 = {
             let limit = b',';
-            let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
-            let mut n = input[index] as i32 - 48;
-            index += 1;
-            while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+            if input[index] == b'-'{
                 index += 1;
+                let mut n = 0;
+                while input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                C - n
             }
-            sign * n
+            else {
+                let mut n = 0;
+                while input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                n
+            }
         };
 
         index += 1;
 
         sl.1 = {
             let limit = b'\n';
-            let sign = if input[index] == b'-'{ index += 1; -1 } else { 1 };
-            let mut n = input[index] as i32 - 48;
-            index += 1;
-            while input[index] != limit {
-                n = 10*n + input[index] as i32 - 48;
+            if input[index] == b'-'{
                 index += 1;
+                let mut n = 0;
+                while input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                L - n
             }
-            sign * n
+            else {
+                let mut n = 0;
+                while input[index] != limit {
+                    n = 10*n + input[index] as u32 - 48;
+                    index += 1;
+                }
+                n
+            }
         };
         index += 3;
     }
 
-    const L: usize = 103;
     let mod_l = {
-        const N: usize = L;
         let mut m = 0;
         let mut m_count = 0;
-        for t in 1..N {
-            let mut v = [0;N];
+        for t in 1..L {
+            let mut v = [0;L as usize];
             let mut maxi_value = 0;
             for s in samples_lines {
-                let e: usize = (s.0 + s.1*(t as i32)).rem_euclid(N as i32) as usize;
+                let e: usize = ((s.0 + s.1*t) % L) as usize;
                 v[e]+=1;
                 if v[e] > maxi_value {
                     maxi_value = v[e];
@@ -208,16 +302,16 @@ pub fn part2(input: &str) -> usize {
         m
     };
 
-    const C: usize = 101;
-    let mod_c = {
-        const N: usize = C;
+    {
         let mut m = 0;
         let mut m_count = 0;
-        for t in 1..N {
-            let mut v = [0;N];
+        let mut t = mod_l;
+        for _ in 1..C {
+            t+=L;
+            let mut v = [0;C as usize];
             let mut maxi_value = 0;
             for s in samples_cols {
-                let e: usize = (s.0 + s.1*(t as i32)).rem_euclid(N as i32) as usize;
+                let e: usize = ((s.0 + s.1*t) % C) as usize;
                 v[e]+=1;
                 if v[e] > maxi_value {
                     maxi_value = v[e];
@@ -229,14 +323,14 @@ pub fn part2(input: &str) -> usize {
             }
         }
         m
-    };
-
-    let n = 60;
-    let mut t = n * L + mod_l;
-    while t % C != mod_c {
-        t += L;
     }
-    const T:usize = L*C;
-    if t > T { t-=T; }
-    t
+
+    // let n = 60;
+    // let mut t = n * L + mod_l;
+    // while t % C != mod_c {
+    //     t += L;
+    // }
+    // const T:usize = L*C;
+    // if t > T { t-=T; }
+    // mod_c
 }
