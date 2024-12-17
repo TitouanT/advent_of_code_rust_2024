@@ -117,12 +117,12 @@ fn can_push_up(grid: &[[u8;GRID_WIDTH*2];GRID_HEIGHT], line: usize, col: usize) 
         _ => false,
     }
 }
+
 fn do_push_up(grid: &mut [[u8;GRID_WIDTH*2];GRID_HEIGHT], line: usize, col: usize) {
     // we are ]
     match grid[line-1][col] {
-        b'.' => match grid[line-1][col-1] {
-            b']' => do_push_up(grid, line-1, col-1),
-            _ => (),
+        b'.' => if grid[line-1][col-1] == b']' {
+            do_push_up(grid, line-1, col-1);
         }
         b']' => do_push_up(grid, line-1, col),
         b'[' => match grid[line-1][col-1] {
@@ -156,9 +156,8 @@ fn can_push_down(grid: &[[u8;GRID_WIDTH*2];GRID_HEIGHT], line: usize, col: usize
 }
 fn do_push_down(grid: &mut [[u8;GRID_WIDTH*2];GRID_HEIGHT], line: usize, col: usize) {
     match grid[line+1][col] {
-        b'.' => match grid[line+1][col-1] {
-            b']' => do_push_down(grid, line+1, col-1),
-            _ => (),
+        b'.' => if grid[line+1][col-1] == b']' {
+            do_push_down(grid, line+1, col-1);
         }
         b']' => do_push_down(grid, line+1, col),
         b'[' => match grid[line+1][col-1] {
