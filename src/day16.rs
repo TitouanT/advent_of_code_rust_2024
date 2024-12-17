@@ -36,6 +36,9 @@ pub fn part1(input: &str) -> u32 {
         };
         // start elagging only when the end has been reached.
         if maxi > 0 {
+            if score < maxi {
+                break;
+            }
             let min_rotations = {
                 if cur_l == el  {
                     match dir {
@@ -139,6 +142,9 @@ pub fn part2(input: &str) -> u32 {
         };
         // start elagging only when the end has been reached.
         if maxi > 0 {
+            if score < maxi {
+                break;
+            }
             let min_rotations = {
                 if cur_l == el  {
                     match dir {
