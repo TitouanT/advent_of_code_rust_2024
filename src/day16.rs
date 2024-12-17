@@ -69,7 +69,6 @@ pub fn part1(input: &str) -> u32 {
                 }
             };
             if score - ((cur_l - el) as u32 + (ec - cur_c) as u32 + 1000 * min_rotations) < maxi {
-                // println!("ellagged");
                 continue
             }
         }
@@ -98,7 +97,6 @@ pub fn part1(input: &str) -> u32 {
             heap.push((walk_score, neigh_l as u8, neigh_c as u8, dir as u8));
         }
     }
-    // println!("heapmaxsize: {}", maxsize);
     let maxi = {
         let first = if scores[el][ec][0] < scores[el][ec][1] { 1 } else { 0 };
         let secnd = if scores[el][ec][2] < scores[el][ec][3] { 3 } else { 2 };
@@ -113,15 +111,14 @@ pub fn part2(input: &str) -> u32 {
     let input = input.as_bytes();
     let mut heap: BinaryHeap<(u32,u8,u8,u8)> = BinaryHeap::with_capacity(1000);
     let mut scores = [[[0u32;4];WIDTH];HEIGHT];
-    let mut visited = [[[false;4];WIDTH];HEIGHT];
     let sl = HEIGHT - 2;
     let sc = 1;
     let el = 1;
     let ec = WIDTH - 3;
     assert_eq!(input[sl*WIDTH + sc], b'S');
     assert_eq!(input[el*WIDTH + ec], b'E');
-    heap.push((u32::MAX, sl as u8, sc as u8, 0));
-    scores[sl][sc][0] = u32::MAX;
+    scores[sl][sc][0] = u32::MAX - 1000;
+    heap.push((scores[sl][sc][0], sl as u8, sc as u8, 0));
     while let Some((score, cur_l, cur_c, dir)) = heap.pop() {
         let cur_l = cur_l as usize;
         let cur_c = cur_c as usize;
@@ -175,7 +172,6 @@ pub fn part2(input: &str) -> u32 {
                 }
             };
             if score - ((cur_l - el) as u32 + (ec - cur_c) as u32 + 1000 * min_rotations) < maxi {
-                // println!("ellagged");
                 continue
             }
         }
@@ -204,43 +200,36 @@ pub fn part2(input: &str) -> u32 {
             heap.push((walk_score, neigh_l as u8, neigh_c as u8, dir as u8));
         }
     }
-    // println!("heapmaxsize: {}", maxsize);
     let maxi = {
         let first = if scores[el][ec][0] < scores[el][ec][1] { 1 } else { 0 };
         let secnd = if scores[el][ec][2] < scores[el][ec][3] { 3 } else { 2 };
         if scores[el][ec][first] < scores[el][ec][secnd] { secnd } else { first }
     };
 
-    let mut stack = [[0u8, 0u8, 0u8];1000];
+    let mut stack = [(0u8, 0u8, 0u8);2000];
     let mut stack_size = 0;
+    let mut visited = [[[false;5];WIDTH];HEIGHT];
     let mut count = 0;
     for i in 0..4 {
         if scores[el][ec][i] == scores[el][ec][maxi] {
-            stack[stack_size] = [el as u8, ec as u8, i as u8];
+            stack[stack_size] = (el as u8, ec as u8, i as u8);
             visited[el][ec][i] = true;
             stack_size += 1;
-            count += 1;
         }
     }
+    visited[el][ec][4] = true;
+    count += 1;
 
     while stack_size > 0 {
         stack_size -= 1;
-        let cur_l = stack[stack_size][0] as usize;
-        let cur_c = stack[stack_size][1] as usize;
-        let dir = stack[stack_size][2] as usize;
+        let (cur_l, cur_c, dir) = stack[stack_size];
+        let cur_l = cur_l as usize;
+        let cur_c = cur_c as usize;
+        let dir = dir as usize;
         let score = scores[cur_l][cur_c][dir];
-        let rot_score = {
-            if score < u32::MAX - 1000 {
-                score + 1000
-            }
-            else { 42 }
-        };
-        let walk_score = {
-            if score < u32::MAX - 1 {
-                score + 1
-            }
-            else { 42 }
-        };
+        if cur_l == sl && cur_c == sc {
+            continue
+        }
 
         let (neigh_dirs, neigh_l, neigh_c) = match dir {
             0 => ([1,3], cur_l, cur_c-1),
@@ -254,22 +243,23 @@ pub fn part2(input: &str) -> u32 {
             if visited[cur_l][cur_c][neigh_dir] {
                 continue
             }
-            if rot_score == scores[cur_l][cur_c][neigh_dir] {
-                stack[stack_size] = [cur_l as u8, cur_c as u8, neigh_dir as u8];
+            if score+1000 == scores[cur_l][cur_c][neigh_dir] {
+                stack[stack_size] = (cur_l as u8, cur_c as u8, neigh_dir as u8);
                 stack_size += 1;
                 visited[cur_l][cur_c][neigh_dir] = true;
-                count += 1;
-
             };
         }
         if visited[neigh_l][neigh_c][dir] {
             continue
         }
-        if input[neigh_l * WIDTH + neigh_c] != b'#' && walk_score == scores[neigh_l][neigh_c][dir] {
-            stack[stack_size] = [neigh_l as u8, neigh_c as u8, dir as u8];
+        if score+1 == scores[neigh_l][neigh_c][dir] {
+            stack[stack_size] = (neigh_l as u8, neigh_c as u8, dir as u8);
             stack_size += 1;
             visited[neigh_l][neigh_c][dir] = true;
-            count += 1;
+            if !visited[neigh_l][neigh_c][4] {
+                count += 1;
+                visited[neigh_l][neigh_c][4] = true;
+            }
         }
     }
     count
