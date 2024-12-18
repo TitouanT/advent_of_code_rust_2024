@@ -34,7 +34,7 @@ pub fn get_one_byte(prg: &[u8;N], a: usize, ip: usize) -> (usize, usize, Option<
     let mut ip = ip;
     let mut output = None;
     loop {
-        match prg[ip] as u8 {
+        match prg[ip] {
             0 => a /= 2_usize.pow(combo(a, b, c, prg[ip+1]) as u32),
             1 => b ^= prg[ip+1] as usize,
             2 => b = combo(a,b,c,prg[ip+1])%8,
@@ -76,21 +76,22 @@ pub fn part1(input: &str) -> String {
     }
 }
 
-fn find_a_shift(prg: &[u8;N]) -> usize {
-    let mut a = 1;
-    while let (0, _, _) = get_one_byte(prg, a, 0) {
-        a*=2;
-    }
-    a
-}
+// fn find_a_shift(prg: &[u8;N]) -> usize {
+//     let mut a = 1;
+//     while let (0, _, _) = get_one_byte(prg, a, 0) {
+//         a*=2;
+//     }
+//     a
+// }
+// let shift = find_a_shift(&prg);
 
 #[aoc(day17, part2)]
 pub fn part2(input: &str) -> usize {
     let (prg, _) = read_input(input);
-    let mut stack = [(0usize, 0u8, 0u8);500];
+    let mut stack = [(0usize, 0u8, 0u8);N];
     let mut stack_size = 1;
     stack[0] = (0, 0, N as u8 - 1);
-    let shift = find_a_shift(&prg);
+    let shift = 8;
     loop  {
         stack_size -= 1;
         let (a, bits, prg_to_output) = stack[stack_size];
