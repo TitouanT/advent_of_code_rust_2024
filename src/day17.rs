@@ -90,7 +90,7 @@ pub fn part2(input: &str) -> usize {
     let (prg, _) = read_input(input);
     let mut stack = [(0usize, 0u8, 0u8);N];
     let mut stack_size = 1;
-    stack[0] = (0, 0, N as u8 - 1);
+    stack[0] = (0, 1, N as u8 - 1);
     let shift = 8;
     loop  {
         stack_size -= 1;
