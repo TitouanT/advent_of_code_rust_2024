@@ -36,7 +36,7 @@ fn read_input_p2(input: &str) -> ([[u16;WIDTH];HEIGHT], [&str;NWALL_USIZE]) {
     let mut is_wall = [[NWALL;WIDTH];HEIGHT];
     let mut index = 0;
     let mut raw_lines = [&raw_input[..1];NWALL_USIZE];
-    for i in 0..NWALL_USIZE {
+    for (i, rawi) in raw_lines.iter_mut().enumerate() {
         let start_index = index;
         let mut line = 0;
         while input[index] != b',' {
@@ -50,7 +50,7 @@ fn read_input_p2(input: &str) -> ([[u16;WIDTH];HEIGHT], [&str;NWALL_USIZE]) {
             index += 1;
         }
         let end_index = index;
-        raw_lines[i] = &raw_input[start_index..end_index];
+        *rawi = &raw_input[start_index..end_index];
         index += 1;
         is_wall[line as usize][col as usize] = i as u16;
     }
@@ -60,75 +60,45 @@ fn read_input_p2(input: &str) -> ([[u16;WIDTH];HEIGHT], [&str;NWALL_USIZE]) {
 #[aoc(day18, part1)]
 pub fn part1(input: &str) -> u32 {
     let mut is_wall = read_input(input);
-    let mut level      = [(0,0);2*WIDTH];
-    let mut next_level = [(0,0);2*WIDTH];
+    let mut level      = &mut [(0,0);2*WIDTH];
+    let mut next_level = &mut [(0,0);2*WIDTH];
     let mut n_level = 1;
 
-    let mut ref_level = &mut level;
-    let mut ref_next_level = &mut next_level;
+    // let mut ref_level = &mut level;
+    // let mut ref_next_level = &mut next_level;
     let mut current_level = 0;
     loop {
         current_level += 1;
         let mut next_level_size = 0;
-        for (curl, curc) in ref_level.iter().take(n_level) {
-            let neighs: [(i32, i32);4] = [
+        for (curl, curc) in level.iter().take(n_level) {
+            for (next_l, next_c) in  &[
                 (curl+1, *curc),
                 (curl-1, *curc),
                 (*curl, curc+1),
-                (*curl, curc-1)
-            ];
-            for (next_l, next_c) in  neighs.iter() {
+                (*curl, curc-1),
+            ] {
                 let next_l = *next_l;
                 let next_c = *next_c;
-                if next_l < 0 || next_l as usize >= HEIGHT || next_c < 0 || next_c as usize >= WIDTH {
+
+                if !(0..HEIGHT_I8).contains(&next_l) || !(0..WIDTH_I8).contains(&next_c) {
                     continue;
                 }
-                if next_l as usize == HEIGHT - 1 && next_c as usize == WIDTH - 1 {
+                if next_l == HEIGHT_I8 - 1 && next_c == WIDTH_I8 - 1 {
                     return current_level;
                 }
                 if is_wall[next_l as usize][next_c as usize] {
                     continue;
                 }
                 is_wall[next_l as usize][next_c as usize] = true;
-                ref_next_level[next_level_size] = (next_l, next_c);
+                next_level[next_level_size] = (next_l, next_c);
                 next_level_size += 1;
             }
         }
-        (ref_level, ref_next_level) = (ref_next_level, ref_level);
+        // (ref_level, ref_next_level) = (ref_next_level, ref_level);
+        (level, next_level) = (next_level, level);
         n_level = next_level_size;
     }
 }
-
-
-// def search(walls, S=71):
-//     ceiling_height = [[0]*S for _ in range(S)]
-//     N = len(walls)+1
-
-//     crawl_record = [[N]*S for _ in range(S)]
-
-//     for i, (a,b) in enumerate(walls):
-//         ceiling_height[a][b] = N-i
-
-//     start = (0,0)
-//     end = (S-1, S-1)
-//     heap = [ (0, *start) ]
-//     while heap:
-//         top_of_my_head, curl, curc = heapq.heappop(heap)
-//         for dl, dc in (0,1), (0,-1), (1,0),(-1,0):
-//             nl = curl+dl
-//             nc = curc+dc
-//             if not (0 <= nl < S and 0 <= nc < S):
-//                 continue
-
-//             neighbor_ceiling = ceiling_height[nl][nc]
-//             top_of_their_head = max(neighbor_ceiling, top_of_my_head)
-
-//             if crawl_record[nl][nc] > top_of_their_head:
-//                 if (nl, nc) == end:
-//                     return walls[N-top_of_their_head]
-//                 crawl_record[nl][nc] = top_of_their_head
-//                 heapq.heappush(heap, (top_of_their_head, nl, nc))
-//     return None
 
 #[aoc(day18, part2)]
 pub fn part2(input: &str) -> String {
@@ -141,8 +111,7 @@ pub fn part2(input: &str) -> String {
         for (dl, dc) in &[(0,1), (1,0), (-1, 0), (0, -1)] {
             let neigh_l = dl + curl as i8;
             let neigh_c = dc + curc as i8;
-            // !(0..HEIGHT_I8).contains(&neigh_l)
-            if neigh_l < 0 || neigh_l >= HEIGHT_I8 || neigh_c < 0 || neigh_c >= WIDTH_I8 {
+            if !(0..HEIGHT_I8).contains(&neigh_l) || !(0..WIDTH_I8).contains(&neigh_c) {
                 continue;
             }
             let neigh_l = neigh_l as usize;
