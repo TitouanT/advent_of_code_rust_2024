@@ -118,9 +118,6 @@ pub fn part2(input: &str) -> String {
             let neigh_c = neigh_c as usize;
 
 
-            // to continue on this path we need to lower the score
-            // the good news for that node is that if it was already visited, it is now likely
-            // the best path going through.
             let neigh_score = {
                 if wall_score[neigh_l][neigh_c] <= current_score {
                     wall_score[neigh_l][neigh_c]
