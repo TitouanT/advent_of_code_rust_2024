@@ -5,8 +5,8 @@ const LUT2: [u64;1000] = [0,80883999266,119883520216,201892339872,323535997072,2
 pub fn part1(input: &str) -> u32 {
     let input = input.as_bytes();
 
-    let a = (input[0] as usize *10 + input[1] as usize)*10 + input[2] as usize - 5328;
-    let b = (input[5] as usize *10 + input[6] as usize)*10 + input[7] as usize - 5328;
+    let a = (input[ 0] as usize *10 + input[ 1] as usize)*10 + input[ 2] as usize - 5328;
+    let b = (input[ 5] as usize *10 + input[ 6] as usize)*10 + input[ 7] as usize - 5328;
     let c = (input[10] as usize *10 + input[11] as usize)*10 + input[12] as usize - 5328;
     let d = (input[15] as usize *10 + input[16] as usize)*10 + input[17] as usize - 5328;
     let e = (input[20] as usize *10 + input[21] as usize)*10 + input[22] as usize - 5328;
@@ -17,8 +17,8 @@ pub fn part1(input: &str) -> u32 {
 pub fn part2(input: &str) -> u64 {
     let input = input.as_bytes();
 
-    let a = (input[0] as usize *10 + input[1] as usize)*10 + input[2] as usize - 5328;
-    let b = (input[5] as usize *10 + input[6] as usize)*10 + input[7] as usize - 5328;
+    let a = (input[ 0] as usize *10 + input[ 1] as usize)*10 + input[ 2] as usize - 5328;
+    let b = (input[ 5] as usize *10 + input[ 6] as usize)*10 + input[ 7] as usize - 5328;
     let c = (input[10] as usize *10 + input[11] as usize)*10 + input[12] as usize - 5328;
     let d = (input[15] as usize *10 + input[16] as usize)*10 + input[17] as usize - 5328;
     let e = (input[20] as usize *10 + input[21] as usize)*10 + input[22] as usize - 5328;
