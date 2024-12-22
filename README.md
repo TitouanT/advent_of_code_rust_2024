@@ -35,5 +35,7 @@ For exemple `./mk_bench.sh 4` will create bench files for days 1, 2, 3 and 4, do
 
 ```
 day12: !!
+day18: Union find
 day19: Do a prefix tree
+day20: just do it
 ```
