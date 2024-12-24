@@ -73,8 +73,6 @@ pub fn part2(input: &str) -> u16 {
             map.entry(key).and_modify(|v| {
                 if v.0 < i {
                     *v = (i, v.1+p4 as u16)
-                    // v.0 = i;
-                    // v.1 += p4 as u16;
                 }
             }).or_insert((i, p4 as u16));
         }
