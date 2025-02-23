@@ -1,4 +1,4 @@
-#![feature(let_chains)]
+// #![feature(let_chains)]
 extern crate aoc_runner;
 
 #[macro_use]
