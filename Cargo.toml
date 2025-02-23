@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+ansi_term = "0.12.1"
 aoc-runner = "0.3.0"
 aoc-runner-derive = "0.3.0"
 regex = "1.11.1"
@@ -44,9 +45,9 @@ name = "day10"
 [[bench]]
 harness = false
 name = "day11"
-# [[bench]]
-# harness = false
-# name = "day12"
+[[bench]]
+harness = false
+name = "day12"
 [[bench]]
 harness = false
 name = "day13"
